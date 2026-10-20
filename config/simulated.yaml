@@ -1,0 +1,26 @@
+# No hardware: a test pattern camera, a turning IMU and two ideal wheels.
+# Useful to try the bridge, the controller's gateway settings and the network first.
+
+robot_name: tb3
+
+devices:
+  camera:
+    driver: simulated_camera
+    width: 424
+    height: 240
+    fps: 15
+  imu:
+    driver: simulated_imu
+    rate_hz: 100
+  wheels:
+    driver: simulated_wheels
+    joints: 2
+
+streams:
+  camera:
+    device: camera
+    frame_id: cam0_optical
+  imu:
+    device: imu
+  wheels:
+    device: wheels

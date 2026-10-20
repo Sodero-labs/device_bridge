@@ -1,0 +1,18 @@
+[Unit]
+Description=Sodero device bridge (serves local devices to the controller over the LAN)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@USER@
+SupplementaryGroups=dialout plugdev video
+WorkingDirectory=@PREFIX@
+ExecStart=@PREFIX@/venv/bin/python -m device_bridge @PREFIX@/config.yaml
+Restart=always
+RestartSec=3
+# The bridge stops the wheels when it exits; give it time to do so.
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

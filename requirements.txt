@@ -1,0 +1,5 @@
+numpy>=1.24
+pyzmq>=25
+PyYAML>=6
+pyserial>=3.5          # turtlebot3_opencr driver
+pyrealsense2>=2.55     # realsense driver; on aarch64 Debian 12 use Python 3.10 (deploy/install.sh does)

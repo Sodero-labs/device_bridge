@@ -1,0 +1,37 @@
+# TurtleBot3 Burger with an Intel RealSense D435.
+# The OpenCR board drives the wheels and carries the IMU, so one device can feed both streams.
+# This example serves the camera and the IMU only; add the wheels stream (below, commented
+# out) to let the controller drive the TurtleBot3.
+
+robot_name: tb3            # topics TM/tb3/...: use the same name in the controller's gateway settings
+
+network:
+  bind: 0.0.0.0            # every interface; set this computer's LAN address to restrict
+  command_port: 53333      # controller -> bridge: wheel commands
+  state_port: 53334        # bridge -> controller: wheel states and IMU
+  camera_port: 53335       # bridge -> controller: RGB-D frames
+
+devices:
+  d435:
+    driver: realsense
+    serial: auto           # or the camera's serial number
+    width: 424             # 424x240 at 15 fps is about 61 Mbit/s; 640x480 needs about 185 Mbit/s
+    height: 240
+    fps: 15
+  opencr:
+    driver: turtlebot3_opencr
+    port: /dev/turtlebot3_opencr
+    poll_hz: 100
+    max_linear_speed: 0.15   # m/s
+    max_angular_speed: 1.0   # rad/s
+
+streams:
+  camera:
+    device: d435
+    frame_id: cam0_optical   # must match the camera frame in the controller's extrinsics
+    send_capture_time: true  # needs NTP on both computers (within about 20 ms); false = arrival time
+  imu:
+    device: opencr
+  # wheels:
+  #   device: opencr
+  #   command_timeout_s: 0.5   # stop the wheels when the controller's commands pause this long
